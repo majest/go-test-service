@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package pb;
+
+// The Count service definition.
+service Strings {
+  rpc Count (CountRequest) returns (CountReply) {}
+}
+
+// The count request contains one parameter.
+message CountRequest {
+  string a = 1;
+}
+
+// The count response contains the result of the calculation.
+message CountReply {
+  int64 v = 1;
+}
