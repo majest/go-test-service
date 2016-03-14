@@ -1,21 +1,23 @@
 package main
 
 import (
-	"github.com/majest/go-microservice/server"
-	"github.com/majest/go-service-test/pb"
-	ss "github.com/majest/go-service-test/server"
-	"github.com/majest/go-service-test/service"
+	"fmt"
+	"log"
+	"net"
+
+	"github.com/majest/go-test-service/consul"
+	"github.com/majest/go-test-service/handler"
+	"github.com/majest/go-test-service/pb"
+	"google.golang.org/grpc"
 )
 
 func main() {
-
-	var svc ss.StringService
-	{
-		// svc = pureAddService{}
-		// svc = loggingMiddleware{svc, logger}
-		// svc = instrumentingMiddleware{svc, requestDuration}
+	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", 9090))
+	if err != nil {
+		log.Fatalf("failed to listen: %v", err)
 	}
-
-	s := server.Init(&server.Config{Name: "Strings Service", Description: "Provides methods to operate on strings"})
-	pb.RegisterStringsServer(s.Transport(), service.Binding{svc})
+	g := grpc.NewServer()
+	consul.RegisterService("com.service.string")
+	pb.RegisterStringsServer(g, new(handler.StringServer))
+	g.Serve(lis)
 }
