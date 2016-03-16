@@ -25,13 +25,13 @@ func init() {
 
 func main() {
 
-	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", 9090))
+	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", servicePort))
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
 
 	g := grpc.NewServer()
-	consul.RegisterService("com.service.string", &consul.Config{
+	consul.RegisterService("string", &consul.Config{
 		ServiceIp:   serviceIP,
 		ServicePort: servicePort,
 		NodeIp:      consulIP,
@@ -39,4 +39,5 @@ func main() {
 
 	pb.RegisterStringsServer(g, new(handler.StringServer))
 	g.Serve(lis)
+
 }
