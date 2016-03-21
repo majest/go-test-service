@@ -18,7 +18,7 @@ var servicePort, consulPort int
 func init() {
 	flag.StringVar(&serviceIP, "ip", "127.0.0.1", "Service ip. Should be local ip if run locally")
 	flag.IntVar(&servicePort, "port", 9090, "Service port")
-	flag.StringVar(&consulIP, "consulip", "", "Consul node ip")
+	flag.StringVar(&consulIP, "consulip", "192.168.99.101", "Consul node ip")
 	flag.IntVar(&consulPort, "consulport", 8500, "Consul node port")
 	flag.Parse()
 }
